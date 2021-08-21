@@ -1,7 +1,7 @@
 import getRawBody from 'raw-body';
 import {stringify} from 'querystring';
 
-export function reqHeaders(req, options) {
+export function requestHeaders(req, options) {
     const headers = Object.assign(options.headers || {}, req.headers);
     headers.connection = 'close';
   

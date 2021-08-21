@@ -1,5 +1,5 @@
 import * as httpProxy from 'http-proxy';
-import {fixBodyContent, reqHeaders} from './requestOptions';
+import {fixBodyContent, requestHeaders} from './requestOptions';
 
 export function ProxyMiddleware(host, options) {
   const proxy = httpProxy.createProxyServer({});
@@ -8,8 +8,7 @@ export function ProxyMiddleware(host, options) {
     fixBodyContent(proxyReq,req);
   });
 
-  const prepareProxyRequest = async (req, res) => {
-    req.url = req.originalUrl || req.url;
+  const prepareProxyRequest = (req, res) => {
     const proxyOptions = Object.assign(
       {
         changeOrigin: true
@@ -17,14 +16,14 @@ export function ProxyMiddleware(host, options) {
       options
     );
   
-    reqHeaders(req, options)
+    requestHeaders(req, options)
     proxyOptions.target = host;
     return proxyOptions;
   };
 
-  const middleware = async (req, res, next) => {
+  const middleware = (req, res, next) => {
     try {
-      const activeProxyOptions = await prepareProxyRequest(req, res);
+      const activeProxyOptions = prepareProxyRequest(req, res);
       proxy.web(req, res, activeProxyOptions);
     } catch (err) {
       next(err);
