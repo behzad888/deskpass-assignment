@@ -1,4 +1,3 @@
-import getRawBody from 'raw-body';
 import {stringify} from 'querystring';
 
 export function requestHeaders(req, options) {

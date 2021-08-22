@@ -1,13 +1,14 @@
 import * as httpProxy from 'http-proxy';
 import {mapHandlers} from './handlers';
-import logger from './logger';
+import Logger from './logger';
 import {fixBodyContent, requestHeaders} from './requestOptions';
 
 export function ProxyMiddleware(host, options, handlers) {
   const proxy = httpProxy.createProxyServer({});
-  mapHandlers(proxy, handlers || {}, options);
+  const logger = Logger();
+  mapHandlers(proxy, handlers || {}, options, logger);
   logger.info('%s: Proxy created -> %s ', new Date(), host);
-  
+
   const prepareProxyRequest = (req, res) => {
     const proxyOptions = Object.assign({}, options);
 

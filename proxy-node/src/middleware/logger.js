@@ -58,4 +58,4 @@ function logger() {
   return {error, warn, info, http, verbose, debug, silly, setProvider};
 }
 
-export default logger();
+export default logger;

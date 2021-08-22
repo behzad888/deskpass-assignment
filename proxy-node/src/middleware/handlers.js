@@ -1,7 +1,6 @@
-import logger from './logger';
 import {fixBodyContent} from './requestOptions';
 
-export function mapHandlers(proxy, handlers, options) {
+export function mapHandlers(proxy, handlers, options, logger) {
   function Log(...args) {
     if (options.enableLogging) logger.info(...args);
   }
