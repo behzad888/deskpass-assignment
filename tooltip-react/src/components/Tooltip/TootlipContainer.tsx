@@ -1,13 +1,11 @@
+import ReactDOM from 'react-dom';
+
 export type TootlipContainerPropsType = {
   children: React.ReactNode;
-  className: string;
+  show: boolean;
 };
-function TootlipContainer({children, className}: TootlipContainerPropsType) {
-  return <div className={'ne-tooltip ne-tooltip-container ' + className}>{children}</div>;
+function TootlipContainer({children, show}: TootlipContainerPropsType) {
+  return show ? ReactDOM.createPortal(children, document.body) : null;
 }
-
-TootlipContainer.defaultProps = {
-  className: '',
-};
 
 export default TootlipContainer;
