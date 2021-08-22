@@ -5,9 +5,9 @@ import {fixBodyContent, requestHeaders} from './requestOptions';
 
 export function ProxyMiddleware(host, options, handlers) {
   const proxy = httpProxy.createProxyServer({});
+  mapHandlers(proxy, handlers || {}, options);
   logger.info('%s: Proxy created -> %s ', new Date(), host);
-  mapHandlers(proxy, handlers, options);
-
+  
   const prepareProxyRequest = (req, res) => {
     const proxyOptions = Object.assign({}, options);
 

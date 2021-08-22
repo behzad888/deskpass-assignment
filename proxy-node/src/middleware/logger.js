@@ -1,15 +1,5 @@
 import * as util from 'util';
 
-const levels = {
-  error: 0,
-  warn: 1,
-  info: 2,
-  http: 3,
-  verbose: 4,
-  debug: 5,
-  silly: 6,
-};
-
 // make it possible for additional log data, such date/time or custom prefix.
 function _interpolate(...args) {
   const result = util.format(...args);
@@ -18,18 +8,19 @@ function _interpolate(...args) {
 }
 
 const defaultProvider = {
-  error: (...args) => console.error(_interpolate(...args)),
-  warn: (...args) => console.warn(_interpolate(...args)),
-  info: (...args) => console.info(_interpolate(...args)),
-  http: (...args) => console.log(_interpolate(...args)),
-  verbose: (...args) => console.log(_interpolate(...args)),
-  debug: (...args) => console.log(_interpolate(...args)),
-  silly: (...args) => console.log(_interpolate(...args)),
+  error: console.error,
+  warn: console.warn,
+  info: console.info,
+  http: console.log,
+  verbose: console.log,
+  debug: console.log,
+  silly: console.log,
 };
 
-function prepareLogger() {
+function logger() {
   let logProvider;
-  //Single instance of logger provider
+
+  //The logger provider should be a single instance because some 3rd party libraries work this way.
   function getLoggerProvider() {
     if (!logProvider) {
       logProvider = defaultProvider;
@@ -38,27 +29,28 @@ function prepareLogger() {
     return logProvider;
   }
   function error(...args) {
-    getLoggerProvider().error(...args);
+    getLoggerProvider().error(_interpolate(...args));
   }
   function warn(...args) {
-    getLoggerProvider().warn(...args);
+    getLoggerProvider().warn(_interpolate(...args));
   }
   function info(...args) {
-    getLoggerProvider().info(...args);
+    getLoggerProvider().info(_interpolate(...args));
   }
   function http(...args) {
-    getLoggerProvider().http(...args);
+    getLoggerProvider().http(_interpolate(...args));
   }
   function verbose(...args) {
-    getLoggerProvider().verbose(...args);
+    getLoggerProvider().verbose(_interpolate(...args));
   }
   function debug(...args) {
-    getLoggerProvider().debug(...args);
+    getLoggerProvider().debug(_interpolate(...args));
   }
   function silly(...args) {
-    getLoggerProvider().silly(...args);
+    getLoggerProvider().silly(_interpolate(...args));
   }
 
+  //You can set any logging provider like winston, log-level, npmlog, etc...
   function setProvider(provider) {
     logProvider = provider;
   }
@@ -66,5 +58,4 @@ function prepareLogger() {
   return {error, warn, info, http, verbose, debug, silly, setProvider};
 }
 
-const logger = prepareLogger();
-export default logger;
+export default logger();

@@ -8,7 +8,7 @@ export function mapHandlers(proxy, handlers, options) {
 
   //The error event is emitted if the request to the target fail.
   proxy.on('error', (error, clientRequest, response, target) => {
-    Log('An error occured at %s:%s', new Date(), error);
+    Log('An error occured at %s:%s', new Date(), error.message);
     handlers.onError &&
       handlers.onError(error, clientRequest, response, target);
   });

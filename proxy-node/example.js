@@ -1,5 +1,6 @@
 import express from 'express';
 import proxy from './src';
+import winston from 'winston';
 import bodyParser from 'body-parser';
 const app = express();
 const port = 3000;
@@ -12,7 +13,19 @@ app.get('/', (req, res) => {
 });
 
 const myProxy = proxy(
-  'https://jsonplaceholder.typicode.com/posts'
+  'https://jsonplaceholder.typicode.com/posts',
+  {},
+  {
+    //uncomment this for using winston logger
+    // setLoggerProvider: ()=>{
+    //   return  winston.createLogger({
+    //     transports: [
+    //       new winston.transports.Console(),
+    //       new winston.transports.File({ filename: 'combined.log' })
+    //     ]
+    //   });
+    // }
+  }
 );
 
 app.use('/api', myProxy);
