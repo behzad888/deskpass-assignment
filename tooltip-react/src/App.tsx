@@ -10,7 +10,7 @@ function App() {
             Edit <code>src/App.tsx</code> and save to reload.
           </p>
         </Tooltip>
-        <Tooltip title="Link">
+        <Tooltip title="Learn ReactLearn ReactLearn React">
           <a
             className="App-link"
             href="https://reactjs.org"

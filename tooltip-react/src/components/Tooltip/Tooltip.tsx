@@ -1,41 +1,77 @@
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import TootlipContainer from './TootlipContainer';
+import {createPopper, Placement} from '@popperjs/core';
 import 'assets/elements.tooltip.scss';
+import {composeEventHandler} from 'components/Utils';
+import {useId} from 'hooks';
 
 export type TooltipPropsType = {
   children: React.ReactElement;
-  place?: 'top' | 'bottom' | 'left' | 'right';
   title?: string;
+  //These are popper options
+  //We are filtering some popper useless options.
+  place?: Placement;
+  flip?: boolean;
+  preventOverflow?: boolean;
+  offset?: [number, number];
 };
 
-function composeEventHandler(
-  internal: (event: MouseEvent) => void,
-  external: (event: MouseEvent) => void
-) {
-  return (event: MouseEvent) => {
-    if (external) {
-      external(event);
-    }
-    internal(event);
-  };
-}
-
 function Tooltip(props: TooltipPropsType) {
-  const {children, title, place} = props;
+  const {children, title, place, flip, preventOverflow, offset} = props;
 
   const [showTootltip, setShowTootltip] = useState(false);
+  const tooltipRef = useRef(null);
+  const handleRef = useRef(null);
+  const id = useId();
 
   //we should not memoize children props
   //because It might change from the parent
   //and we might need that change in the slot/children
   const childrenProps = {
+    'aria-describedby': id,
     ...children.props,
+    ref: handleRef,
   };
+
+  useEffect(() => {
+    if (!showTootltip || !handleRef.current || !tooltipRef.current) return;
+
+    const modifiers = [
+      {
+        name: 'offset',
+        options: {
+          offset,
+        },
+      },
+      {
+        name: 'flip',
+        options: {
+          altBoundary: flip,
+        },
+      },
+      {
+        name: 'preventOverflow',
+        options: {
+          altBoundary: preventOverflow,
+        },
+      },
+    ];
+    const popper = createPopper(handleRef.current!, tooltipRef.current!, {
+      placement: place,
+      modifiers,
+    });
+
+    //destroy popper for garbage collector
+    return () => {
+      popper.destroy();
+    };
+    /* eslint-disable-next-line react-hooks/exhaustive-deps */
+  }, [showTootltip]);
 
   const handleMouseOver = useCallback(() => {
     setShowTootltip(true);
   }, []);
-  
+
   const handleMouseLeave = useCallback(() => {
     setShowTootltip(false);
   }, []);
@@ -53,13 +89,13 @@ function Tooltip(props: TooltipPropsType) {
   );
 
   //Classes always are the same, so we memoize them for perf matter
-  const classObject = useMemo(() => `ne-tooltip ne-tooltip--${place}`, []);
+  const classObject = useMemo(() => `de-tooltip de-tooltip--${place}`, [place]);
 
   return (
     <React.Fragment>
       {React.cloneElement(children, childrenProps)}
       <TootlipContainer show={showTootltip}>
-        <div className={classObject} role="tooltip">
+        <div id={id} className={classObject} role="tooltip" ref={tooltipRef}>
           {title}
         </div>
       </TootlipContainer>
@@ -69,6 +105,8 @@ function Tooltip(props: TooltipPropsType) {
 
 Tooltip.defaultProps = {
   place: 'top',
+  flip: true,
+  preventOverflow: true,
 };
 
 export default Tooltip;
