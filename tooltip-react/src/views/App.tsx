@@ -1,5 +1,4 @@
-import React from 'react';
-import {Tooltip} from './components';
+import {Tooltip} from '../components';
 
 function App() {
   return (
@@ -10,7 +9,7 @@ function App() {
             Edit <code>src/App.tsx</code> and save to reload.
           </p>
         </Tooltip>
-        <Tooltip title="Learn ReactLearn ReactLearn React">
+        <Tooltip title="Learn ReactLearn ReactLearn React" place="right">
           <a
             className="App-link"
             href="https://reactjs.org"

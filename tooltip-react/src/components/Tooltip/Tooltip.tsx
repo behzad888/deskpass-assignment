@@ -7,7 +7,7 @@ import {useId} from 'hooks';
 
 export type TooltipPropsType = {
   children: React.ReactElement;
-  title?: string;
+  title?: string | React.ReactElement;
   //These are popper options
   //We are filtering some popper useless options.
   place?: Placement;
@@ -15,7 +15,7 @@ export type TooltipPropsType = {
   preventOverflow?: boolean;
   offset?: [number, number];
 };
-
+//this is a uncontrolled component
 function Tooltip(props: TooltipPropsType) {
   const {children, title, place, flip, preventOverflow, offset} = props;
 
