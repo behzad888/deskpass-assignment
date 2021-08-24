@@ -4,6 +4,12 @@
 
 In the project directory, you can run:
 
+
+## Project setup
+```
+yarn install
+```
+
 ### `yarn start`
 
 Runs the app in the development mode.\
@@ -26,3 +32,9 @@ The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+
+
+## Format code
+```
+yarn prettier
+```

@@ -1,3 +1,15 @@
+@import './variables';
 .de-tooltip {
-
+  position: fixed;
+  top: -2rem;
+  left: 0;
+  z-index: 1500;
+  & {
+    color: $white;
+    padding: 4px 8px;
+    font-weight: 500;
+    font-size: $font-size;
+    border-radius: $border-radius;
+    background-color: $bg-tooltip;
+  }
 }

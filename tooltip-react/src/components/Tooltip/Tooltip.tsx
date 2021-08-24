@@ -1,9 +1,9 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import TootlipContainer from './TootlipContainer';
 import {createPopper, Placement} from '@popperjs/core';
-import 'assets/elements.tooltip.scss';
-import {composeEventHandler} from 'components/Utils';
+import TootlipContainer from './TootlipContainer';
 import {useId} from 'hooks';
+
+import 'assets/elements.tooltip.scss';
 
 export type TooltipPropsType = {
   children: React.ReactElement;
@@ -21,7 +21,7 @@ function Tooltip(props: TooltipPropsType) {
 
   const [showTootltip, setShowTootltip] = useState(false);
   const tooltipRef = useRef(null);
-  const handleRef = useRef(null);
+  const handleRef = useRef<HTMLElement | null>(null);
   const id = useId();
 
   //we should not memoize children props
@@ -76,17 +76,20 @@ function Tooltip(props: TooltipPropsType) {
     setShowTootltip(false);
   }, []);
 
-  //We cannot memorize these events
-  //because this component will re-render in every mouse-enter and mouse-leave
-  //and the children needs them for the next mouse event
-  childrenProps.onMouseOver = composeEventHandler(
-    handleMouseOver,
-    childrenProps.onMouseOver
-  );
-  childrenProps.onMouseLeave = composeEventHandler(
-    handleMouseLeave,
-    childrenProps.onMouseLeave
-  );
+  useEffect(() => {
+    const ref = handleRef.current;
+    if (!ref) return;
+    //we add mousemove and mouseleave event listener after child rendered
+    //we should not pass these events to the childProps because the child could be a react element
+    ref.addEventListener('mousemove', handleMouseOver);
+    ref.addEventListener('mouseleave', handleMouseLeave);
+
+    return () => {
+      ref.removeEventListener('mousemove', handleMouseOver);
+      ref.removeEventListener('mouseleave', handleMouseLeave);
+    };
+    /* eslint-disable-next-line react-hooks/exhaustive-deps */
+  }, [handleRef.current]);
 
   //Classes always are the same, so we memoize them for perf matter
   const classObject = useMemo(() => `de-tooltip de-tooltip--${place}`, [place]);
@@ -107,6 +110,7 @@ Tooltip.defaultProps = {
   place: 'top',
   flip: true,
   preventOverflow: true,
+  offset: [0, 5],
 };
 
 export default Tooltip;
