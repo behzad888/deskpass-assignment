@@ -14,13 +14,16 @@ export type TooltipPropsType = {
   flip?: boolean;
   preventOverflow?: boolean;
   offset?: [number, number];
+  showArrow?: boolean;
 };
 //this is a uncontrolled component
 function Tooltip(props: TooltipPropsType) {
-  const {children, title, place, flip, preventOverflow, offset} = props;
+  const {children, title, place, flip, preventOverflow, offset, showArrow} =
+    props;
 
   const [showTootltip, setShowTootltip] = useState(false);
   const tooltipRef = useRef(null);
+  const arrowRef = useRef(null);
   const handleRef = useRef<HTMLElement | null>(null);
   const id = useId();
 
@@ -37,6 +40,13 @@ function Tooltip(props: TooltipPropsType) {
     if (!showTootltip || !handleRef.current || !tooltipRef.current) return;
 
     const modifiers = [
+      {
+        name: 'arrow',
+        options: {
+          enabled: showArrow,
+          element: arrowRef.current,
+        },
+      },
       {
         name: 'offset',
         options: {
@@ -100,6 +110,7 @@ function Tooltip(props: TooltipPropsType) {
       <TootlipContainer show={showTootltip}>
         <div id={id} className={classObject} role="tooltip" ref={tooltipRef}>
           {title}
+          <div className="de-tooltip__arrow" ref={arrowRef}></div>
         </div>
       </TootlipContainer>
     </React.Fragment>
@@ -111,6 +122,7 @@ Tooltip.defaultProps = {
   flip: true,
   preventOverflow: true,
   offset: [0, 5],
+  showArrow: true,
 };
 
 export default Tooltip;
