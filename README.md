@@ -8,4 +8,4 @@
  
  - Create a simple proxy server in Node. This proxy server should be capable of transparently forwarding client requests to at least one target server and returning the response from the target server to the requesting client. In addition, this server should be capable of loading various code plugins that extend the functionality of the proxy server. These plugins should be able to view/modify the contents of the request and response life cycle, with the exact steps of this life cycle defined by you. Useful plugin ideas include things such as whitelisting/blacklisting request URLs based on passed criteria, adding request logging for security purposes, filtering out specific pieces of response content, or anything else that you think could be useful. [Check it out](./tooltip-react/README.md)
  
- - [Technical questions](technical.md)
+ - [Technical questions](./Technical.md)
