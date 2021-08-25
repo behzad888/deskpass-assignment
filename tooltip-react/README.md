@@ -1,10 +1,49 @@
 # React tooltip
+In this project, I'm using [Popper](https://popper.js.org/) for *positioning engine*.
 
-## Available Scripts
+I'm trying to create a reusable `tooltip` component with some options like:
+ - **place**: `top` | `bottom` | `left` | `right` | `top-start` | `top-end` | `bottom-start` | `bottom-end` | `right-start` | `right-end` | `left-start` | `left-end` | `auto` | `auto-start` | `auto-end`
+  - **title**: This option shows string or React/HTML element in the tooltip
+  - **flip**: This option can change the placement of tooltip when it's scheduled to overflow a given  `clippingParents` boundary.
+  - **preventOverflow**: This option prevents the tootlip from being cut off by moving it so that it stays visible within `clippingParents` boundary area.
+  - **offset**: This option lets you displace a tooltip element from its reference element.
+  - **showArrow**: This option positions an inner element of the tooltip which is a triangle or caret that points toward the reference element.
 
-In the project directory, you can run:
+> *clippingParents* are the scrolling containers that may cause the element to be partially or fully cut off.
 
+## BEM
+I'm following *BEM* methodology for css naming convension.
+```SCSS
+.block__element--modifier {}
+```
+**BEM w/ Namespaces:**
 
+The naming conventions start with `.d` which stands for `Deskpass`.
+```SCSS
+.namespace-block__element--modifier {}
+.d__element--modifier {}
+```
+
+**Component:**
+
+`c` stands for component
+```SCSS
+.dc-component-name[<element>|<modifier>] {}
+```
+
+**Element:**
+
+`e` stands for element
+```SCSS
+.de-element-name[<element>|<modifier>] {}
+```
+
+## ITCSS
+I'm following *ITCSS* to organize project SCSS files. the SCSS file names as follows:
+
+ - **Components**: Specific UI components. This is where the majority of our work takes place and our UI components are often composed of Objects and Components
+ - **Elements**: Styling for bare HTML elements (like H1, A, etc.). These come with default styling from the browser so we can redefine them here.
+ 
 ## Project setup
 ```
 yarn install

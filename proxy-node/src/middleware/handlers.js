@@ -33,37 +33,7 @@ export function mapHandlers(proxy, handlers, options, logger) {
       handlers.onResponse(proxyResponse, clientRequest, response);
   });
 
-  //This event is emitted before the data is sent.
-  proxy.on(
-    'proxyReqWs',
-    (proxyRequest, clientRequest, socket, options, head) => {
-      Log('Websocket request started at %s', new Date());
-
-      handlers.onRequestWs &&
-        handlers.onRequestWs(
-          proxyRequest,
-          clientRequest,
-          socket,
-          options,
-          head
-        );
-    }
-  );
-
-  //This event is emitted once the proxy websocket was created and piped into the target websocket.
-  proxy.on('open', (proxySocket) => {
-    Log('Websocket created at %s', new Date());
-
-    handlers.onOpen && handlers.onOpen(proxySocket);
-  });
-
-  //This event is emitted once the proxy websocket was closed.
-  proxy.on('close', (proxyResponse, socket, head) => {
-    Log('Websocket closed at %s', new Date());
-
-    handlers.onClose && handlers.onClose(proxyResponse, socket, head);
-  });
-
+  //Set custom logger
   handlers.setLoggerProvider &&
     logger.setProvider(handlers.setLoggerProvider());
 }

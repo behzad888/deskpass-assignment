@@ -7,6 +7,7 @@ export function ProxyMiddleware(host, options, handlers) {
   const proxy = httpProxy.createProxyServer({});
   const logger = Logger();
   mapHandlers(proxy, handlers || {}, options, logger);
+  
   logger.info('%s: Proxy created -> %s ', new Date(), host);
 
   const prepareProxyRequest = (req, res) => {
