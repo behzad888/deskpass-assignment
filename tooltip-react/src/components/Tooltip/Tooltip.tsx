@@ -90,11 +90,11 @@ function Tooltip(props: TooltipPropsType) {
     if (!ref) return;
     //we add mousemove and mouseleave event listener after child rendered
     //we should not pass these events to the childProps because the child could be a react element
-    ref.addEventListener('mousemove', handleMouseOver);
+    ref.addEventListener('mouseover', handleMouseOver);
     ref.addEventListener('mouseleave', handleMouseLeave);
 
     return () => {
-      ref.removeEventListener('mousemove', handleMouseOver);
+      ref.removeEventListener('mouseover', handleMouseOver);
       ref.removeEventListener('mouseleave', handleMouseLeave);
     };
     /* eslint-disable-next-line react-hooks/exhaustive-deps */
