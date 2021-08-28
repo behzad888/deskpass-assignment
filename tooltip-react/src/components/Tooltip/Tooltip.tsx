@@ -43,7 +43,6 @@ function Tooltip(props: TooltipPropsType) {
       {
         name: 'arrow',
         options: {
-          enabled: showArrow,
           element: arrowRef.current,
         },
       },
@@ -110,7 +109,9 @@ function Tooltip(props: TooltipPropsType) {
       <TootlipContainer show={showTootltip}>
         <div id={id} className={classObject} role="tooltip" ref={tooltipRef}>
           {title}
-          <div className="de-tooltip__arrow" ref={arrowRef}></div>
+          {showArrow && (
+            <div className="s-e-tooltip__arrow" ref={arrowRef}></div>
+          )}
         </div>
       </TootlipContainer>
     </React.Fragment>
